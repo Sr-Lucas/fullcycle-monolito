@@ -1,11 +1,9 @@
 import { Sequelize } from "sequelize-typescript";
 import InvoiceModel from "../repository/invoice.model";
 import InvoiceItemModel from "../repository/invoice-item.model";
-import InvoiceFacade from "./invoice.facade";
 import { InvoiceFacadeFactory } from "../factory/invoice-facade.factory";
 import Address from "../../@shared/domain/value-object/address";
 import InvoiceItem from "../domain/invoice-item";
-import Id from "../../@shared/domain/value-object/id.value-object";
 
 describe("Testing Invoice Facade", () => {
   let sequelize: Sequelize;
@@ -57,18 +55,16 @@ describe("Testing Invoice Facade", () => {
         "88888-888"
       ),
       name: "Invoice teste",
-      id: new Id("1"),
     };
 
-    await facade.generate(input);
+    const invoiceCreated = await facade.generate(input);
 
     const invoice = await InvoiceModel.findOne({
-      where: { id: "1" },
+      where: { id: invoiceCreated.id },
       include: ["invoiceItems"],
     });
 
     expect(invoice).toBeDefined();
-    expect(invoice.id).toBe(input.id.id);
     expect(invoice.document).toBe(input.document);
     expect(invoice.name).toBe(input.name);
     expect(invoice.invoiceItems.length).toBe(2);

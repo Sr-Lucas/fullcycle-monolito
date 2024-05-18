@@ -2,16 +2,27 @@ import Address from "../../../@shared/domain/value-object/address";
 import Id from "../../../@shared/domain/value-object/id.value-object";
 import InvoiceItem from "../../domain/invoice-item";
 
-export interface FindInvoiceInputDto {
+export interface FindInvoiceUseCaseInputDto {
   id: string;
 }
 
-export interface FindInvoiceOutputDto {
+export interface FindInvoiceUseCaseOutputDto {
   id: string;
   name: string;
   document: string;
-  address: Address;
-  items: { id: string; name: string; price: number }[];
+  address: {
+    street: string;
+    number: string;
+    complement: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
+  items: {
+    id: string;
+    name: string;
+    price: number;
+  }[];
+  total: number;
   createdAt: Date;
-  updatedAt: Date;
 }

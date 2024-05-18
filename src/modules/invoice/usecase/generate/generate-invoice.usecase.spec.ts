@@ -33,32 +33,32 @@ describe("GenerateInvoiceUseCase tests", () => {
     );
 
     const input = {
-      items,
-      document: "1234-5678",
-      address: new Address(
-        "Rua 123",
-        "99",
-        "Casa Verde",
-        "Criciúma",
-        "SC",
-        "88888-888"
-      ),
       name: "Invoice teste",
-      id: new Id("1"),
+      document: "1234-5678",
+      street: "Rua 123",
+      number: "99",
+      complement: "Casa Verde",
+      city: "Criciúma",
+      state: "SC",
+      zipCode: "88888-888",
+      items: items.map((invItem) => ({
+        name: invItem.name,
+        price: invItem.price,
+        id: invItem.id.id,
+      })),
     };
 
     const result = await usecase.execute(input);
 
     expect(result).toBeDefined();
-    expect(result.id).toBe(input.id.id);
     expect(result.document).toBe(input.document);
     expect(result.name).toBe(input.name);
     expect(result.items.length).toBe(2);
-    expect(result.address.city).toBe(input.address.city);
-    expect(result.address.complement).toBe(input.address.complement);
-    expect(result.address.number).toBe(input.address.number);
-    expect(result.address.street).toBe(input.address.street);
-    expect(result.address.state).toBe(input.address.state);
-    expect(result.address.zipCode).toBe(input.address.zipCode);
+    expect(result.city).toBe(input.city);
+    expect(result.complement).toBe(input.complement);
+    expect(result.number).toBe(input.number);
+    expect(result.street).toBe(input.street);
+    expect(result.state).toBe(input.state);
+    expect(result.zipCode).toBe(input.zipCode);
   });
 });

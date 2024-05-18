@@ -3,7 +3,6 @@ import Id from "../../@shared/domain/value-object/id.value-object";
 import InvoiceItem from "../domain/invoice-item";
 
 export interface AddInvoiceFacadeInputDto {
-  id?: Id;
   name: string;
   document: string;
   address: Address;
@@ -19,9 +18,8 @@ export interface InvoiceFacadeOutputDto {
   name: string;
   document: string;
   address: Address;
+  total: number;
   items: { id: string; name: string; price: number }[];
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export default interface InvoiceFacadeInterface {

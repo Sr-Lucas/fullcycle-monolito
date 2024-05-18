@@ -61,6 +61,9 @@ describe("FindInvoiceUseCase tests", () => {
     expect(result.address.number).toBe(invoice.address.number);
     expect(result.address.street).toBe(invoice.address.street);
     expect(result.address.state).toBe(invoice.address.state);
+    expect(result.total).toBe(
+      invoice.items.reduce((acc, invItem) => acc + invItem.price, 0)
+    );
     expect(result.address.zipCode).toBe(invoice.address.zipCode);
   });
 });

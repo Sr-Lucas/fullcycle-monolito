@@ -2,26 +2,25 @@ import Address from "../../../@shared/domain/value-object/address";
 import { InvoiceFactory } from "../../factorie/invoice.factory";
 import InvoiceGateway from "../../gateway/invoice.gateway";
 import {
-  GenerateInvoiceInputDto,
-  GenerateInvoiceOutputDto,
+  GenerateInvoiceUseCaseInputDto,
+  GenerateInvoiceUseCaseOutputDto,
 } from "./generate-invoice.dto";
 
 export class GenerateInvoiceUseCase {
   constructor(private readonly _invoiceRepository: InvoiceGateway) {}
 
   async execute(
-    input: GenerateInvoiceInputDto
-  ): Promise<GenerateInvoiceOutputDto> {
+    input: GenerateInvoiceUseCaseInputDto
+  ): Promise<GenerateInvoiceUseCaseOutputDto> {
     const invoice = InvoiceFactory.create({
-      id: input.id.id,
       name: input.name,
       address: {
-        city: input.address.city,
-        complement: input.address.complement,
-        number: input.address.number,
-        state: input.address.state,
-        street: input.address.street,
-        zipCode: input.address.zipCode,
+        city: input.city,
+        complement: input.complement,
+        number: input.number,
+        state: input.state,
+        street: input.street,
+        zipCode: input.zipCode,
       },
       document: input.document,
       items: input.items.map((i) => ({
@@ -35,17 +34,14 @@ export class GenerateInvoiceUseCase {
     return {
       id: invoice.id.id,
       name: invoice.name,
-      updatedAt: invoice.updatedAt,
-      createdAt: invoice.createdAt,
-      address: new Address(
-        invoice.address.street,
-        invoice.address.number,
-        invoice.address.complement,
-        invoice.address.city,
-        invoice.address.state,
-        invoice.address.zipCode
-      ),
+      city: invoice.address.city,
+      complement: invoice.address.complement,
+      number: invoice.address.number,
+      state: invoice.address.state,
+      street: invoice.address.street,
+      zipCode: invoice.address.zipCode,
       document: invoice.document,
+      total: invoice.items.reduce((acc, invItem) => acc + invItem.price, 0),
       items: invoice.items.map((i) => ({
         id: i.id.id,
         name: i.name,
